@@ -46,9 +46,6 @@
     xserver = {
       # Enable the X11 windowing system.
       enable = true;
-      # Enable the KDE Plasma Desktop Environment.
-      displayManager.sddm.enable = true;
-      desktopManager.plasma5.enable = true;
       # Configure keymap in X11
       layout = "gb";
       xkbVariant = "";
@@ -56,6 +53,14 @@
       # libinput.enable = true;
     };
   };
+
+  # Enable the KDE Plasma Desktop Environment.
+  # services.xserver.displayManager.sddm.enable = true;
+  # services.xserver.desktopManager.plasma5.enable = true;
+
+  # Plasma 6
+  services.desktopManager.plasma6.enable = true;
+  services.xserver.displayManager.sddm.wayland.enable = true;
 
   # Configure console keymap
   console.keyMap = "uk";
@@ -87,7 +92,6 @@
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       firefox
-      kate
       vmware-horizon-client
     ];
   };
