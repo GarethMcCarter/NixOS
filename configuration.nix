@@ -42,17 +42,19 @@
     LC_TIME = "en_GB.UTF-8";
   };
 
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
-  # Enable the KDE Plasma Desktop Environment.
-  services.xserver.displayManager.sddm.enable = true;
-  services.xserver.desktopManager.plasma5.enable = true;
-
-  # Configure keymap in X11
-  services.xserver = {
-    layout = "gb";
-    xkbVariant = "";
+  services = {
+    xserver = {
+      # Enable the X11 windowing system.
+      enable = true;
+      # Enable the KDE Plasma Desktop Environment.
+      displayManager.sddm.enable = true;
+      desktopManager.plasma5.enable = true;
+      # Configure keymap in X11
+      layout = "gb";
+      xkbVariant = "";
+      # Enable touchpad support (enabled default in most desktopManager).
+      libinput.enable = true;
+    };
   };
 
   # Configure console keymap
@@ -78,9 +80,6 @@
     #media-session.enable = true;
   };
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
-
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.gareth = {
     isNormalUser = true;
@@ -89,6 +88,7 @@
     packages = with pkgs; [
       firefox
       kate
+      vmware-horizon-client
     ];
   };
 
@@ -98,8 +98,13 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     git
+    htop
+    iotop
+    lm_sensors
+    tailscale
+    tree
+    vim
     wget
   ];
 
@@ -111,10 +116,20 @@
   #   enableSSHSupport = true;
   # };
 
-  # List services that you want to enable:
+  # https://nixos.wiki/wiki/Steam
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+    #dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+  };
 
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
+  # List services that you want to enable:
+  services.openssh = {
+    enable = true;
+    #settings.PasswordAuthentication = false;
+    #settings.PermitRootLogin = "yes";
+  };
+  services.tailscale.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
